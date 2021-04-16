@@ -91,9 +91,8 @@ export class CURD extends React.Component {
     });
   }
 
-  onCompleteHandle() {
-    let id = arguments[0];
-
+  complete = (id, event) => {
+  
     this.setState({
       mockData: this.state.mockData.map(item => {
         if (item.id === id) {
