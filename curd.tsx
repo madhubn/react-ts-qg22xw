@@ -32,8 +32,13 @@ export class CURD extends React.Component {
   }
 
    delete = (a, b) => {
-     console.log(a)
-     console.log("dddddddddddd",b)
+    this.setState({
+      mockData: this.state.mockData.filter(item => {
+        if (item.id !== a) {
+          return item;
+        }
+      })
+    });
     
   }
 
