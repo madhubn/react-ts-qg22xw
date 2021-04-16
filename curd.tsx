@@ -115,7 +115,7 @@ export class CURD extends React.Component {
   }
 
 
-    renderEditForm() {
+ renderEditForm() {
     if (this.state.edit) {
       return <form onSubmit={this.onUpdateHandle}>
         <input type="text" name="updatedItem" className="item" defaultValue={this.state.title} />
@@ -125,7 +125,7 @@ export class CURD extends React.Component {
     }
   renderAddForm() {
     if (this.state.add) {
-      return  <form onSubmit={this.onSubmitHandle.bind(this)}>
+      return  <form onSubmit={this.onSubmitHandle}>
           <input type="text" name="item" className="item" />
           <button className="btn-add-item">Add</button>
         </form>
@@ -147,7 +147,7 @@ export class CURD extends React.Component {
               {item.title}
               <button onClick={(ev) => this.delete(item.id, ev)}>Delete</button>
               <button onClick={(ev) => this.edit(item.id, item.title, ev)}>Edit</button>
-              <button>Complete</button>
+              <button onClick={(ev) => this.complete(item.id, ev)}>Complete</button>
             </li>
           ))}
         </ul>
