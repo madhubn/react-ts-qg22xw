@@ -59,15 +59,16 @@ export class CURD extends React.Component {
 
 
   
-  onEditHandle(event) {
+  edit = (id, title, event) => {
+    console.log(id, title);
     this.setState({
       edit: true,
-      id: arguments[0],
-      title: arguments[1]
+      id: id,
+      title: title
     });
   }
 
-  onUpdateHandle(event) {
+  onUpdateHandle = (e: React.FormEvent<HTMLFormElement>): void =>{
     event.preventDefault();
 
     this.setState({
@@ -104,10 +105,18 @@ export class CURD extends React.Component {
 
     renderEditForm() {
     if (this.state.edit) {
-      return <form onSubmit={this.onUpdateHandle.bind(this)}>
+      return <form onSubmit={this.onUpdateHandle}>
         <input type="text" name="updatedItem" className="item" defaultValue={this.state.title} />
         <button className="update-add-item">Update</button>
       </form>
+    }
+    }
+  renderAddForm() {
+    if (!this.state.edit) {
+      return  <form onSubmit={this.onSubmitHandle.bind(this)}>
+          <input type="text" name="item" className="item" />
+          <button className="btn-add-item">Add</button>
+        </form>
     }
     }
 
@@ -115,16 +124,15 @@ export class CURD extends React.Component {
     return ( 
     <div>
        {this.renderEditForm()}
-        <form onSubmit={this.onSubmitHandle.bind(this)}>
-          <input type="text" name="item" className="item" />
-          <button className="btn-add-item">Add</button>
-        </form>
+       {this.renderAddForm()}
+
+         
       <ul>
           {this.state.mockData.map(item => (
             <li>
               {item.title}
               <button onClick={(ev) => this.delete(item.id, ev)}>Delete</button>
-              <button >Edit</button>
+              <button onClick={(ev) => this.edit(item.id, item.title, ev)}>Edit</button>
               <button>Complete</button>
             </li>
           ))}
