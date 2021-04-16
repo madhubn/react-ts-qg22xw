@@ -6,6 +6,7 @@ export class CURD extends React.Component {
 
     this.state = {
       edit: false,
+      add: false,
       id: null,
       mockData: [{
         id: '1',
@@ -42,11 +43,13 @@ export class CURD extends React.Component {
     
   }
 
-   onSubmitHandle(event) {
+   onSubmitHandle = (e: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
 
     this.setState({
       mockData: [...this.state.mockData, {
+        edit: false,
+        add: false,
         id: Date.now(),
         title: event.target.item.value,
         done: false,
@@ -63,6 +66,7 @@ export class CURD extends React.Component {
     console.log(id, title);
     this.setState({
       edit: true,
+      add: false,
       id: id,
       title: title
     });
@@ -102,6 +106,14 @@ export class CURD extends React.Component {
     });
   }
 
+  addClick = (ev) =>{
+     event.preventDefault();
+      this.setState({
+      edit:false,
+      add: true
+    });
+  }
+
 
     renderEditForm() {
     if (this.state.edit) {
@@ -112,7 +124,7 @@ export class CURD extends React.Component {
     }
     }
   renderAddForm() {
-    if (!this.state.edit) {
+    if (this.state.add) {
       return  <form onSubmit={this.onSubmitHandle.bind(this)}>
           <input type="text" name="item" className="item" />
           <button className="btn-add-item">Add</button>
@@ -123,6 +135,8 @@ export class CURD extends React.Component {
   render() {
     return ( 
     <div>
+
+      <button onClick={this.addClick}>Add</button>
        {this.renderEditForm()}
        {this.renderAddForm()}
 
