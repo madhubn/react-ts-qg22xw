@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import { About } from "./About";
 import Hello from "./Hello";
+import CURD from "./curd";
 import "./style.css";
 
 interface AppProps {}
@@ -22,6 +23,7 @@ class App extends Component<AppProps, AppState> {
       <div>
         <Hello name={this.state.name} />
         <About />
+        <CURD />
         <p>Start editing to see some magic happen :)</p>
       </div>
     );
