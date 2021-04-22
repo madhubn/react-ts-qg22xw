@@ -146,7 +146,7 @@ export class CURD extends React.Component {
               {item.title}
               <button onClick={(ev) => this.delete(item.id, ev)}>Delete</button>
               <button onClick={(ev) => this.edit(item.id, item.title, ev)}>Edit</button>
-              <button onClick={(ev) => this.complete(item.id, ev)}>Complete</button>
+              {/* <button onClick={(ev) => this.complete(item.id, ev)}>Complete</button> */}
             </li>
           ))}
         </ul>

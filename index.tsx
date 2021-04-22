@@ -14,7 +14,7 @@ class App extends Component<AppProps, AppState> {
   constructor(props) {
     super(props);
     this.state = {
-      name: "React"
+      name: "SIMPLE CURD"
     };
   }
 
@@ -22,9 +22,8 @@ class App extends Component<AppProps, AppState> {
     return (
       <div>
         <Hello name={this.state.name} />
-        <About />
+        {/* <About /> */}
         <CURD />
-        <p>Start editing to see some magic happen :)</p>
       </div>
     );
   }
