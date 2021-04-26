@@ -106,7 +106,9 @@ export class CURD extends React.Component {
   }
 
   addClick = (ev) =>{
+    debugger;
      event.preventDefault();
+    
       this.setState({
       edit:false,
       add: true
@@ -146,16 +148,22 @@ export class CURD extends React.Component {
     <div>
 
       <button onClick={this.addClick}>Add</button>
+    
        {/* {this.renderEditForm()} */}
        {/* {this.renderAddForm()} */}
-      
-    <div>
-      {this.state.add ? (
-       <RenderAddForm/>
-      ) : (
-        <RenderEditForm />
-      )}
-    </div>
+
+     
+      {(() => {
+        if (this.state.add) {
+         <RenderAddForm/>
+        } else if (this.state.edit) {
+          return (
+            <RenderEditForm/>
+          )
+        }
+      })()}
+   
+   
       <ul>
           {this.state.mockData.map(item => (
             <li>
