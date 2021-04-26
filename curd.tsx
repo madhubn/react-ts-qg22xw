@@ -114,32 +114,48 @@ export class CURD extends React.Component {
   }
 
 
- renderEditForm() {
-    if (this.state.edit) {
-      return <form onSubmit={this.onUpdateHandle}>
-        <input type="text" name="updatedItem" className="item" defaultValue={this.state.title} />
-        <button className="update-add-item">Update</button>
-      </form>
-    }
-    }
-  renderAddForm() {
-    if (this.state.add) {
-      return  <form onSubmit={this.onSubmitHandle}>
-          <input type="text" name="item" className="item" />
-          <button className="btn-add-item">Add</button>
-        </form>
-    }
-    }
+//  renderEditForm() {
+//     if (this.state.edit) {
+//       return <form onSubmit={this.onUpdateHandle}>
+//         <input type="text" name="updatedItem" className="item" defaultValue={this.state.title} />
+//         <button className="update-add-item">Update</button>
+//       </form>
+//     }
+//     }
+
+  // renderAddForm() {
+  //   if (this.state.add) {
+  //     return  <form onSubmit={this.onSubmitHandle}>
+  //         <input type="text" name="item" className="item" />
+  //         <button className="btn-add-item">Add</button>
+  //       </form>
+  //   }
+  // }
 
   render() {
+    const RenderAddForm = ()=> <form onSubmit={this.onSubmitHandle}>
+          <input type="text" name="item" className="item" />
+          <button className="btn-add-item">Add</button>
+        </form> ;
+
+    const RenderEditForm = ()=>  <form onSubmit={this.onUpdateHandle}>
+        <input type="text" name="updatedItem" className="item" defaultValue={this.state.title} />
+        <button className="update-add-item">Update</button>
+      </form> ;
     return ( 
     <div>
 
       <button onClick={this.addClick}>Add</button>
-       {this.renderEditForm()}
-       {this.renderAddForm()}
-
-         
+       {/* {this.renderEditForm()} */}
+       {/* {this.renderAddForm()} */}
+      
+    <div>
+      {this.state.add ? (
+       <RenderAddForm/>
+      ) : (
+        <RenderEditForm />
+      )}
+    </div>
       <ul>
           {this.state.mockData.map(item => (
             <li>
