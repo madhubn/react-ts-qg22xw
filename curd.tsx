@@ -45,7 +45,6 @@ export class CURD extends React.Component {
 
    onSubmitHandle = (e: React.FormEvent<HTMLFormElement>): void => {
     event.preventDefault();
-
     this.setState({
       mockData: [...this.state.mockData, {
         edit: false,
@@ -92,7 +91,6 @@ export class CURD extends React.Component {
   }
 
   complete = (id, event) => {
-  
     this.setState({
       mockData: this.state.mockData.map(item => {
         if (item.id === id) {
@@ -106,7 +104,6 @@ export class CURD extends React.Component {
   }
 
   addClick = (ev) =>{
-    debugger;
      event.preventDefault();
     
       this.setState({
@@ -135,15 +132,18 @@ export class CURD extends React.Component {
   // }
 
   render() {
+    
     const RenderAddForm = ()=> <form onSubmit={this.onSubmitHandle}>
           <input type="text" name="item" className="item" />
           <button className="btn-add-item">Add</button>
         </form> ;
-
+ 
     const RenderEditForm = ()=>  <form onSubmit={this.onUpdateHandle}>
         <input type="text" name="updatedItem" className="item" defaultValue={this.state.title} />
         <button className="update-add-item">Update</button>
       </form> ;
+
+
     return ( 
     <div>
 
@@ -151,18 +151,17 @@ export class CURD extends React.Component {
     
        {/* {this.renderEditForm()} */}
        {/* {this.renderAddForm()} */}
+    {
+        this.state.add
+        ? <RenderAddForm/>
+        : console.log('Got someone else')
+    }
 
-     
-      {(() => {
-        if (this.state.add) {
-         <RenderAddForm/>
-        } else if (this.state.edit) {
-          return (
-            <RenderEditForm/>
-          )
-        }
-      })()}
-   
+    {
+        this.state.edit
+        ?  <RenderEditForm/> 
+        : console.log('Got someone else')
+    }
    
       <ul>
           {this.state.mockData.map(item => (
