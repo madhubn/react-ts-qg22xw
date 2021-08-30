@@ -6,6 +6,7 @@ import CURD from './curd';
 import './style.css';
 import AgGrid from './ag-grid';
 import AgGridMedals from './ag-grid-gold-medal';
+import ServerGrid from './server-side';
 
 interface AppProps {}
 interface AppState {
@@ -27,7 +28,8 @@ class App extends Component<AppProps, AppState> {
         {/* <About /> */}
         {/* <CURD /> */}
         {/* <AgGrid /> */}
-        <AgGridMedals />
+        {/* <AgGridMedals /> */}
+        <ServerGrid />
       </div>
     );
   }
