@@ -4,6 +4,13 @@ import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
 import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 import { filter } from 'ag-grid-community/dist/lib/utils/array';
+import {
+  CellValueChangedEvent,
+  ColDef,
+  GetMainMenuItemsParams,
+  GridApi
+} from 'ag-grid-community';
+import { LicenseManager } from 'ag-grid-enterprise';
 
 class Page {
   offset = 0;
@@ -12,18 +19,22 @@ class Page {
 
 interface AppProps {}
 
-interface AppPState { 
+interface AppPState {
   gripApi: any;
   rowData: [];
   columns: any;
   rowModelType: string;
   offset: number;
   pageSize: number;
+  defaultColDef?: ColDef;
 }
 
 class ServerGrid extends React.Component<AppProps, AppPState> {
   constructor(props) {
     super(props);
+    LicenseManager.setLicenseKey(
+      'Peace_OTY2OTQ1OTQ1Njk3Mw==7e213e88aef89910e528cf77b5ac1af0'
+    );
     this.state = {
       gripApi: '',
       rowData: [],
@@ -45,38 +56,44 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
       ],
       rowModelType: 'serverSide',
       offset: 0,
-      pageSize: 4
+      pageSize: 4,
+      defaultColDef: { filter: true, floatingFilter: true }
     });
   }
 
-  onGridReady = params => {
-    const datasource = {
-      getRows(params) {
-        console.log(JSON.stringify(params.request, null, 1));
-        const { startRow, endRow } = params.request;
-        const url = 'https://reqres.in/api/products?';
-        const url1 = `${url}page=0&per_page=4`;
-        fetch(url1, {
-          method: 'get',
-          headers: { 'Content-Type': 'application/json; charset=utf-8' }
+  datasource = {
+    getRows(params) {
+      console.log(JSON.stringify(params.request, null, 1));
+      const { startRow, endRow } = params.request;
+      const url = 'https://reqres.in/api/products?';
+      const url1 = `${url}page=0&per_page=4`;
+      // {
+      //   method: 'get',
+      //   headers: { 'Content-Type': 'application/json; charset=utf-8' }
+      // }
+      fetch(url1)
+        .then(httpResponse => httpResponse.json())
+        .then(response => {
+          params.successCallback(response.data, response.total);
         })
-          .then(httpResponse => httpResponse.json())
-          .then(response => {
-            params.successCallback(response.data, response.total);
-          })
-          .catch(error => {
-            console.error(error);
-            params.failCallback();
-          });
-      }
-    };
+        .catch(error => {
+          console.error(error);
+          params.failCallback();
+        });
+    }
+  };
 
+  componentDidUpdate() {
+    // this.state.gripApi.api.setServerSideDatasource(this.datasource);
+  }
+
+  onGridReady = params => {
     this.setState({
       gripApi: params
     });
     // register datasource with the grid
 
-    params.api.setServerSideDatasource(datasource);
+    params.api.setServerSideDatasource(this.datasource);
     // const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
     // fetch(apiUrl)
     //   .then(response => response.json())
@@ -120,8 +137,6 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
       // editable: true,
       // make every column use 'text' filter by default
       // filter: 'agTextColumnFilter'
-      filter: true,
-      floatingFilter: true
     };
 
     // if we had column groups, we could provide default group items here
