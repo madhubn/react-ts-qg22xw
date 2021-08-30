@@ -125,7 +125,8 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     debugger;
     this.state.gripApi.api.paginationSetPageSize(event.target.value);
   };
-  onChangonFilterChangede = () => {
+
+  onFilterChanged = () => {
     debugger;
   };
 
@@ -140,6 +141,8 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
       // editable: true,
       // make every column use 'text' filter by default
       // filter: 'agTextColumnFilter'
+      filter: true,
+      floatingFilter: true
     };
 
     // if we had column groups, we could provide default group items here
