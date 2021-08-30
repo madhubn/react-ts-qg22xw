@@ -125,6 +125,9 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     debugger;
     this.state.gripApi.api.paginationSetPageSize(event.target.value);
   };
+  onChangonFilterChangede = () => {
+    debugger;
+  };
 
   render() {
     // overrides the default using a multiple column types
@@ -172,6 +175,7 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
             pagination={true}
             paginationPageSize={this.state.pageSize}
             domLayout="autoHeight"
+            onFilterChanged={this.onFilterChanged}
             // paginationAutoPageSize={true} // default size based on height of table
           />
         </div>
