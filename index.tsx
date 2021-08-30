@@ -8,6 +8,7 @@ import AgGrid from './ag-grid';
 import AgGridMedals from './ag-grid-gold-medal';
 import ServerGrid from './server-side';
 import ClientGrid from './client-side';
+import ServerGrid2 from './server-side2';
 
 interface AppProps {}
 interface AppState {
@@ -31,7 +32,8 @@ class App extends Component<AppProps, AppState> {
         {/* <AgGrid /> */}
         {/* <AgGridMedals /> */}
         {/* <ClientGrid /> */}
-        <ServerGrid />
+        {/* <ServerGrid /> */}
+        <ServerGrid2 />
       </div>
     );
   }
