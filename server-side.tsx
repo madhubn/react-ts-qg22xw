@@ -12,7 +12,7 @@ class Page {
 
 interface AppProps {}
 
-interface AppPState {
+interface AppPState { 
   gripApi: any;
   rowData: [];
   columns: any;
