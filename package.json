@@ -8,6 +8,7 @@
     "ag-grid-community": "^26.0.0",
     "ag-grid-enterprise": "^26.0.1",
     "ag-grid-react": "^26.0.0",
+    "json-server": "^0.16.3",
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
   },

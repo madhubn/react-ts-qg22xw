@@ -12,7 +12,7 @@ interface AppPState {
   columns: any;
 }
 
-class ServerGrid extends React.Component<AppProps, AppPState> {
+class ClientGrid extends React.Component<AppProps, AppPState> {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,36 +26,21 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
     this.setState({
       gripApi: params
     });
-    // const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
-    // fetch(apiUrl)
-    //   .then(response => response.json())
-    //   .then((rowData: any) => {
-    //     console.log('This is your data', rowData);
-    //     // params.api.applyTransaction({ add: rowData });
-    //     // params.api.paginationGoToPage(10); // set default page
-    //     this.setState({
-    //       rowData: rowData
-    //     });
-    //   });
+    const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then((rowData: any) => {
+        console.log('This is your data', rowData);
+        params.api.applyTransaction({ add: rowData });
+        params.api.paginationGoToPage(10); // set default page
+        // this.setState({
+        //   rowData: rowData
+        // });
+      });
   };
 
   componentDidMount() {
-    this.setState({
-      columns: [
-        { field: 'athlete' },
-        { field: 'age' },
-        { field: 'country' },
-        { field: 'sport' },
-        { field: 'year' },
-        { field: 'date' },
-        { field: 'gold' },
-        { field: 'silver' },
-        { field: 'bronze' },
-        { field: 'total' }
-      ]
-    });
-    const apiUrl =
-      'https://www.ag-grid.com/example-assets/olympic-winners.json';
+    const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
     fetch(apiUrl)
       .then(response => response.json())
       .then((rowData: any) => {
@@ -65,6 +50,34 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
         });
       });
   }
+
+  createServerSideDatasource = server => {
+    return {
+      getRows: function(params) {
+        console.log('[Datasource] - rows requested by grid: ', params.request);
+        var response = server.getData(params.request);
+        setTimeout(function() {
+          if (response.success) {
+            params.success({ rowData: response.rows });
+          } else {
+            params.fail();
+          }
+        }, 500);
+      }
+    };
+  };
+
+  createFakeServer = allData => {
+    return {
+      getData: function(request) {
+        var requestedRows = allData.slice();
+        return {
+          success: true,
+          rows: requestedRows
+        };
+      }
+    };
+  };
 
   onChange = event => {
     debugger;
@@ -106,21 +119,38 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
         </select>
         <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
           <AgGridReact
-            rowData={this.state.rowData}
-            // defaultColDef={defaultColDef}
-            // defaultColGroupDef={defaultColGroupDef}
-            // columnTypes={columnTypes}
-            columnDefs={this.state.columns}
+            defaultColDef={defaultColDef}
+            defaultColGroupDef={defaultColGroupDef}
+            columnTypes={columnTypes}
             onGridReady={this.onGridReady}
             // rowData={this.state.rowData}
-            // pagination={true}
-            // paginationPageSize={10}
+            pagination={true}
+            paginationPageSize={10}
             // paginationAutoPageSize={true} // default size based on height of table
-          />
+          >
+            <AgGridColumn
+              field="make"
+              headerName="Make"
+              sortable={true}
+              filter={true}
+            />
+            <AgGridColumn
+              field="model"
+              headerName="Model 1"
+              sortable={true}
+              filter={true}
+            />
+            <AgGridColumn
+              field="price"
+              headerName="Price 1"
+              sortable={true}
+              filter={true}
+            />
+          </AgGridReact>
         </div>
       </div>
     );
   }
 }
 
-export default ServerGrid;
+export default ClientGrid;

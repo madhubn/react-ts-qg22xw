@@ -7,6 +7,7 @@ import './style.css';
 import AgGrid from './ag-grid';
 import AgGridMedals from './ag-grid-gold-medal';
 import ServerGrid from './server-side';
+import ClientGrid from './client-side';
 
 interface AppProps {}
 interface AppState {
@@ -17,7 +18,7 @@ class App extends Component<AppProps, AppState> {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'SIMPLE CURD'
+      name: 'Server CURD'
     };
   }
 
@@ -29,6 +30,7 @@ class App extends Component<AppProps, AppState> {
         {/* <CURD /> */}
         {/* <AgGrid /> */}
         {/* <AgGridMedals /> */}
+        {/* <ClientGrid /> */}
         <ServerGrid />
       </div>
     );
