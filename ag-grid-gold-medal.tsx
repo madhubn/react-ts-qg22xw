@@ -47,6 +47,24 @@ class AgGridMedals extends React.Component<AppProps, AppPState> {
       });
   }
 
+  onBtSortAthlete = evt => {
+    const defaultState = { sort: null };
+    this.setState({
+      columns: [
+        { ...defaultState, field: 'athlete', sort: 'asc' },
+        { ...defaultState, field: 'age' },
+        { ...defaultState, field: 'country' },
+        { ...defaultState, field: 'sport' },
+        { ...defaultState, field: 'year' },
+        { ...defaultState, field: 'date' },
+        { ...defaultState, field: 'gold' },
+        { ...defaultState, field: 'silver' },
+        { ...defaultState, field: 'bronze' },
+        { ...defaultState, field: 'total' }
+      ]
+    });
+  };
+
   render() {
     // overrides the default using a multiple column types
     const dType = ['dateColumn', 'nonEditableColumn'];
@@ -80,22 +98,31 @@ class AgGridMedals extends React.Component<AppProps, AppPState> {
         suppressMenu: true
       }
     };
+
     return (
-      <div className="ag-theme-alpine" style={{ height: 400, width: 1000 }}>
-        <AgGridReact
-          defaultColDef={defaultColDef}
-          defaultColGroupDef={defaultColGroupDef}
-          columnTypes={columnTypes}
-          rowData={this.state.rowData}
-          sideBar={sideBarDef}
-          rowGroupPanelShow="always"
-          pivotPanelShow="always"
-          applyColumnDefOrder={true}
-        >
-          {this.state.columns.map(column => (
-            <AgGridColumn {...column} field={column.field} />
-          ))}
-        </AgGridReact>
+      <div>
+        <div>
+          <button type="button" onClick={this.onBtSortAthlete}>
+            Sort Athlete
+          </button>
+        </div>
+
+        <div className="ag-theme-alpine" style={{ height: 400, width: 1000 }}>
+          <AgGridReact
+            defaultColDef={defaultColDef}
+            defaultColGroupDef={defaultColGroupDef}
+            columnTypes={columnTypes}
+            rowData={this.state.rowData}
+            sideBar={sideBarDef}
+            rowGroupPanelShow="always"
+            pivotPanelShow="always"
+            applyColumnDefOrder={true}
+          >
+            {this.state.columns.map(column => (
+              <AgGridColumn {...column} field={column.field} />
+            ))}
+          </AgGridReact>
+        </div>
       </div>
     );
   }
