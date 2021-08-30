@@ -7,6 +7,7 @@ import { AgGridColumn, AgGridReact } from 'ag-grid-react';
 interface AppProps {}
 
 interface AppPState {
+  gripApi: any;
   rowData: [];
 }
 
@@ -14,11 +15,15 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
   constructor(props) {
     super(props);
     this.state = {
+      gripApi: '',
       rowData: []
     };
   }
 
   onGridReady = params => {
+    this.setState({
+      gripApi: params
+    });
     const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
     fetch(apiUrl)
       .then(response => response.json())
@@ -72,6 +77,11 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
     };
   };
 
+  onChange = event => {
+    debugger;
+    this.state.gripApi.api.paginationSetPageSize(event.target.value);
+  };
+
   render() {
     // overrides the default using a multiple column types
     const dType = ['dateColumn', 'nonEditableColumn'];
@@ -98,36 +108,44 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
       }
     };
     return (
-      <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
-        <AgGridReact
-          defaultColDef={defaultColDef}
-          defaultColGroupDef={defaultColGroupDef}
-          columnTypes={columnTypes}
-          onGridReady={this.onGridReady}
-          // rowData={this.state.rowData}
-          pagination={true}
-          paginationPageSize={10}
-          paginationAutoPageSize={true} // default size based on height of table
-        >
-          <AgGridColumn
-            field="make"
-            headerName="Make"
-            sortable={true}
-            filter={true}
-          />
-          <AgGridColumn
-            field="model"
-            headerName="Model 1"
-            sortable={true}
-            filter={true}
-          />
-          <AgGridColumn
-            field="price"
-            headerName="Price 1"
-            sortable={true}
-            filter={true}
-          />
-        </AgGridReact>
+      <div>
+        <select onChange={this.onChange}>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
+          <AgGridReact
+            defaultColDef={defaultColDef}
+            defaultColGroupDef={defaultColGroupDef}
+            columnTypes={columnTypes}
+            onGridReady={this.onGridReady}
+            // rowData={this.state.rowData}
+            pagination={true}
+            paginationPageSize={10}
+            // paginationAutoPageSize={true} // default size based on height of table
+          >
+            <AgGridColumn
+              field="make"
+              headerName="Make"
+              sortable={true}
+              filter={true}
+            />
+            <AgGridColumn
+              field="model"
+              headerName="Model 1"
+              sortable={true}
+              filter={true}
+            />
+            <AgGridColumn
+              field="price"
+              headerName="Price 1"
+              sortable={true}
+              filter={true}
+            />
+          </AgGridReact>
+        </div>
       </div>
     );
   }
