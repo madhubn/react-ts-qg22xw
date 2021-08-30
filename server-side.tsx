@@ -18,24 +18,17 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
     };
   }
 
-  onGridReady = params => {
+  componentDidMount() {
     const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
     fetch(apiUrl)
       .then(response => response.json())
       .then((rowData: any) => {
         console.log('This is your data', rowData);
-        updateData(rowData);
-        // this.setState({
-        //   rowData: rowData
-        // });
+        this.setState({
+          rowData: rowData
+        });
       });
-
-    const updateData = data => {
-      var fakeServer = this.createFakeServer(data);
-      var datasource = this.createServerSideDatasource(fakeServer);
-      params.api.setServerSideDatasource(datasource);
-    };
-  };
+  }
 
   createServerSideDatasource = server => {
     return {
@@ -44,7 +37,6 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
         var response = server.getData(params.request);
         setTimeout(function() {
           if (response.success) {
-            debugger;
             params.success({ rowData: response.rows });
           } else {
             params.fail();
@@ -92,32 +84,33 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
       }
     };
     return (
-      <div style={{ width: '100%', height: '100%' }}>
-        <div
-          id="myGrid"
-          style={{
-            height: '100%',
-            width: '100%'
-          }}
-          className="ag-theme-alpine-dark"
+      <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
+        <AgGridReact
+          defaultColDef={defaultColDef}
+          defaultColGroupDef={defaultColGroupDef}
+          columnTypes={columnTypes}
+          rowData={this.state.rowData}
+          pagination={true}
         >
-          <AgGridReact
-            defaultColDef={{
-              flex: 1,
-              minWidth: 100
-            }}
-            rowModelType={'serverSide'}
-            onGridReady={this.onGridReady}
-          >
-            <AgGridColumn field="athlete" minWidth={220} />
-            <AgGridColumn field="country" minWidth={200} />
-            <AgGridColumn field="year" />
-            <AgGridColumn field="sport" minWidth={200} />
-            <AgGridColumn field="gold" />
-            <AgGridColumn field="silver" />
-            <AgGridColumn field="bronze" />
-          </AgGridReact>
-        </div>
+          <AgGridColumn
+            field="make"
+            headerName="Make"
+            sortable={true}
+            filter={true}
+          />
+          <AgGridColumn
+            field="model"
+            headerName="Model 1"
+            sortable={true}
+            filter={true}
+          />
+          <AgGridColumn
+            field="price"
+            headerName="Price 1"
+            sortable={true}
+            filter={true}
+          />
+        </AgGridReact>
       </div>
     );
   }

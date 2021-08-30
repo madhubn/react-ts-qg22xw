@@ -6,6 +6,7 @@
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",
     "ag-grid-community": "^26.0.0",
+    "ag-grid-enterprise": "^26.0.1",
     "ag-grid-react": "^26.0.0",
     "react": "^16.8.0",
     "react-dom": "^16.8.0"
