@@ -5,6 +5,7 @@ import Hello from './Hello';
 import CURD from './curd';
 import './style.css';
 import AgGrid from './ag-grid';
+import AgGridMedals from './ag-grid-gold-medal';
 
 interface AppProps {}
 interface AppState {
@@ -24,8 +25,9 @@ class App extends Component<AppProps, AppState> {
       <div>
         <Hello name={this.state.name} />
         {/* <About /> */}
-        <CURD />
-        <AgGrid />
+        {/* <CURD /> */}
+        {/* <AgGrid /> */}
+        <AgGridMedals />
       </div>
     );
   }

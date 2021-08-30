@@ -8,18 +8,35 @@ interface AppProps {}
 
 interface AppPState {
   rowData: [];
+  columns: any;
 }
 
-class AgGrid extends React.Component<AppProps, AppPState> {
+class AgGridMedals extends React.Component<AppProps, AppPState> {
   constructor(props) {
     super(props);
     this.state = {
-      rowData: []
+      rowData: [],
+      columns: []
     };
   }
 
   componentDidMount() {
-    const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
+    this.setState({
+      columns: [
+        { field: 'athlete' },
+        { field: 'age' },
+        { field: 'country' },
+        { field: 'sport' },
+        { field: 'year' },
+        { field: 'date' },
+        { field: 'gold' },
+        { field: 'silver' },
+        { field: 'bronze' },
+        { field: 'total' }
+      ]
+    });
+    const apiUrl =
+      'https://www.ag-grid.com/example-assets/olympic-winners.json';
     fetch(apiUrl)
       .then(response => response.json())
       .then((rowData: any) => {
@@ -36,15 +53,23 @@ class AgGrid extends React.Component<AppProps, AppPState> {
     // a default column definition with properties that get applied to every column
     const defaultColDef = {
       // set every column width
-      width: 100,
       // make every column editable
-      editable: true,
+      // editable: true,
       // make every column use 'text' filter by default
-      filter: 'agTextColumnFilter'
+      // filter: 'agTextColumnFilter',
+      sortable: true,
+      resizable: true,
+      width: 150,
+      enableRowGroup: true,
+      enablePivot: true,
+      enableValue: true
     };
 
     // if we had column groups, we could provide default group items here
     const defaultColGroupDef = {};
+    const sideBarDef = {
+      toolPanels: ['columns']
+    };
 
     // define a column type (you can define as many as you like)
     const columnTypes = {
@@ -56,35 +81,24 @@ class AgGrid extends React.Component<AppProps, AppPState> {
       }
     };
     return (
-      <div className="ag-theme-alpine" style={{ height: 400, width: 600 }}>
+      <div className="ag-theme-alpine" style={{ height: 400, width: 1000 }}>
         <AgGridReact
           defaultColDef={defaultColDef}
           defaultColGroupDef={defaultColGroupDef}
           columnTypes={columnTypes}
           rowData={this.state.rowData}
+          sideBar={sideBarDef}
+          rowGroupPanelShow="always"
+          pivotPanelShow="always"
+          applyColumnDefOrder={true}
         >
-          <AgGridColumn
-            field="make"
-            headerName="Make"
-            sortable={true}
-            filter={true}
-          />
-          <AgGridColumn
-            field="model"
-            headerName="Model 1"
-            sortable={true}
-            filter={true}
-          />
-          <AgGridColumn
-            field="price"
-            headerName="Price 1"
-            sortable={true}
-            filter={true}
-          />
+          {this.state.columns.map(column => (
+            <AgGridColumn {...column} field={column.field} />
+          ))}
         </AgGridReact>
       </div>
     );
   }
 }
 
-export default AgGrid;
+export default AgGridMedals;
