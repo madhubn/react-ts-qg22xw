@@ -25,6 +25,7 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
       .then((rowData: any) => {
         console.log('This is your data', rowData);
         params.api.applyTransaction({ add: rowData });
+        params.api.paginationGoToPage(10); // set default page
         // this.setState({
         //   rowData: rowData
         // });
