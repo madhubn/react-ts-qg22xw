@@ -18,6 +18,19 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
     };
   }
 
+  onGridReady = params => {
+    const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
+    fetch(apiUrl)
+      .then(response => response.json())
+      .then((rowData: any) => {
+        console.log('This is your data', rowData);
+        params.api.applyTransaction({ add: rowData });
+        // this.setState({
+        //   rowData: rowData
+        // });
+      });
+  };
+
   componentDidMount() {
     const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
     fetch(apiUrl)
@@ -89,8 +102,11 @@ class ServerGrid extends React.Component<AppProps, AppPState> {
           defaultColDef={defaultColDef}
           defaultColGroupDef={defaultColGroupDef}
           columnTypes={columnTypes}
-          rowData={this.state.rowData}
+          onGridReady={this.onGridReady}
+          // rowData={this.state.rowData}
           pagination={true}
+          paginationPageSize={10}
+          paginationAutoPageSize={true} // default size based on height of table
         >
           <AgGridColumn
             field="make"
