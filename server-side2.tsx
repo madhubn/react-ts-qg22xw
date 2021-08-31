@@ -84,7 +84,7 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
   };
 
   componentDidUpdate() {
-    // this.state.gripApi.api.setServerSideDatasource(this.datasource);
+    //
   }
 
   onGridReady = params => {
