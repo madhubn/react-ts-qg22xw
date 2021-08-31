@@ -62,13 +62,15 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     });
   }
 
-  ServerSideDatasource = (pageNumber: number) => {
+  ServerSideDatasource = (pageNumber: number, queryString?: string) => {
     return {
       async getRows(params) {
         console.log(JSON.stringify(params.request, null, 1));
         const { startRow, endRow } = params.request;
         const url = 'https://reqres.in/api/products?';
-        const url1 = `${url}page=0&per_page=${pageNumber}`;
+        const url1 = `${url}page=0&per_page=${pageNumber}${
+          queryString === undefined ? '' : queryString
+        }`;
 
         fetch(url1)
           .then(httpResponse => httpResponse.json())
@@ -152,8 +154,9 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
   // }
 
   onChange = event => {
-    debugger;
     this.state.gripApi.api.paginationSetPageSize(event.target.value);
+    const datasource = this.ServerSideDatasource(Number(event.target.value));
+    this.state.gripApi.api.setServerSideDatasource(datasource);
   };
 
   onFilterChanged = evn => {
@@ -162,9 +165,11 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     const filters = evn.api.getFilterModel();
     const filterKeys = Object.keys(filters);
     filterKeys.forEach(filt => {
-      url = url + `${filt}=${filters[filt].filter}&`;
+      url = url + `&${filt}=${filters[filt].filter}`;
     });
     console.log(url);
+    const datasource = this.ServerSideDatasource(3, url);
+    this.state.gripApi.api.setServerSideDatasource(datasource);
   };
 
   render() {
