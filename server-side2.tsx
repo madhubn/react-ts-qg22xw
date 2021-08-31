@@ -11,6 +11,7 @@ import {
   GridApi
 } from 'ag-grid-community';
 import { LicenseManager } from 'ag-grid-enterprise';
+import ButtonCellRenders from './CellRenderer/ButtonCellRenderer';
 
 class Page {
   offset = 0;
@@ -27,6 +28,7 @@ interface AppPState {
   offset: number;
   pageSize: number;
   defaultColDef?: ColDef;
+  components?: any;
 }
 
 class ServerGrid2 extends React.Component<AppProps, AppPState> {
@@ -53,14 +55,39 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
         { field: 'name', filter: 'agTextColumnFilter' },
         { field: 'color', filter: 'agTextColumnFilter' },
         { field: 'pantone_value', filter: 'agTextColumnFilter' },
-        { field: 'year', filter: 'agTextColumnFilter' }
+        { field: 'year', filter: 'agTextColumnFilter' },
+        {
+          field: 'id',
+          cellRenderer: 'buttonCellRenders'
+        }
       ],
       rowModelType: 'serverSide',
+      components: {
+        buttonCellRenders: ButtonCellRenders
+      },
       offset: 0,
       pageSize: 4,
       defaultColDef: { filter: true, floatingFilter: true }
     });
   }
+
+  ButtonCellRenders1 = params => {
+    console.log('btnCellRenderer');
+    const element = document.createElement('span');
+    const imageElement = document.createElement('img');
+
+    // visually indicate if this months value is higher or lower than last months value
+    if (params.value > 15) {
+      imageElement.src =
+        'https://www.ag-grid.com/example-assets/weather/fire-plus.png';
+    } else {
+      imageElement.src =
+        'https://www.ag-grid.com/example-assets/weather/fire-minus.png';
+    }
+    element.appendChild(imageElement);
+    element.appendChild(document.createTextNode(params.value));
+    return element;
+  };
 
   ServerSideDatasource = (pageNumber: number, queryString?: string) => {
     return {
