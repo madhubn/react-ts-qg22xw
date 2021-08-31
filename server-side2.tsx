@@ -172,6 +172,24 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     this.state.gripApi.api.setServerSideDatasource(datasource);
   };
 
+  onSortChanged = evn => {
+    let url = '';
+    console.log(evn.api.getSortModel());
+    const sorts = evn.api.getSortModel();
+    if (sorts.length > 0) {
+      const { colId, sort } = sorts[0];
+      console.log(colId, sort);
+    }
+    // const filters = evn.api.getFilterModel();
+    // const filterKeys = Object.keys(filters);
+    // filterKeys.forEach(filt => {
+    //   url = url + `&${filt}=${filters[filt].filter}`;
+    // });
+    // console.log(url);
+    // const datasource = this.ServerSideDatasource(3, url);
+    // this.state.gripApi.api.setServerSideDatasource(datasource);
+  };
+
   render() {
     // overrides the default using a multiple column types
     const dType = ['dateColumn', 'nonEditableColumn'];
@@ -222,6 +240,7 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
             paginationPageSize={this.state.pageSize}
             domLayout="autoHeight"
             onFilterChanged={this.onFilterChanged}
+            onSortChanged={this.onSortChanged}
             // paginationAutoPageSize={true} // default size based on height of table
           />
         </div>
