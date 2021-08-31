@@ -157,12 +157,12 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
   };
 
   onFilterChanged = evn => {
-    let url: string;
+    let url = '';
     console.log(evn.api.getFilterModel());
     const filters = evn.api.getFilterModel();
     const filterKeys = Object.keys(filters);
     filterKeys.forEach(filt => {
-      url = `${filt}=${filterKeys[filt].filter}&`;
+      url = url + `${filt}=${filters[filt].filter}&`;
     });
     console.log(url);
   };
