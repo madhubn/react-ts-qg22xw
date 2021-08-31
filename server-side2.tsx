@@ -190,6 +190,10 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     // this.state.gripApi.api.setServerSideDatasource(datasource);
   };
 
+  onCellClicked = evn => {
+    console.log('onCellClicked', evn);
+  };
+
   render() {
     // overrides the default using a multiple column types
     const dType = ['dateColumn', 'nonEditableColumn'];
@@ -241,6 +245,7 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
             domLayout="autoHeight"
             onFilterChanged={this.onFilterChanged}
             onSortChanged={this.onSortChanged}
+            onCellClicked={this.onCellClicked}
             // paginationAutoPageSize={true} // default size based on height of table
           />
         </div>
