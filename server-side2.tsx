@@ -184,6 +184,7 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
       // make every column use 'text' filter by default
       // filter: 'agTextColumnFilter'
       filter: true,
+      sortable: true,
       floatingFilter: true
     };
 
