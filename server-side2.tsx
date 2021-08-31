@@ -30,6 +30,7 @@ interface AppPState {
 }
 
 class ServerGrid2 extends React.Component<AppProps, AppPState> {
+  gridColumnApi!: any;
   constructor(props) {
     super(props);
     LicenseManager.setLicenseKey(
@@ -61,6 +62,27 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     });
   }
 
+  ServerSideDatasource = (pageNumber: number) => {
+    return {
+      async getRows(params) {
+        console.log(JSON.stringify(params.request, null, 1));
+        const { startRow, endRow } = params.request;
+        const url = 'https://reqres.in/api/products?';
+        const url1 = `${url}page=0&per_page=${pageNumber}`;
+
+        fetch(url1)
+          .then(httpResponse => httpResponse.json())
+          .then(response => {
+            params.successCallback(response.data, response.total);
+          })
+          .catch(error => {
+            console.error(error);
+            params.failCallback();
+          });
+      }
+    };
+  };
+
   datasource = {
     getRows(params) {
       console.log(JSON.stringify(params.request, null, 1));
@@ -91,9 +113,17 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     this.setState({
       gripApi: params
     });
+
+    this.gridColumnApi = params.columnApi;
+    const updateData = () => {
+      const datasource = this.ServerSideDatasource(4);
+      params.api.setServerSideDatasource(datasource);
+    };
+
+    updateData();
     // register datasource with the grid
 
-    params.api.setServerSideDatasource(this.datasource);
+    // params.api.setServerSideDatasource(this.datasource);
     // const apiUrl = 'https://www.ag-grid.com/example-assets/row-data.json';
     // fetch(apiUrl)
     //   .then(response => response.json())
@@ -126,8 +156,15 @@ class ServerGrid2 extends React.Component<AppProps, AppPState> {
     this.state.gripApi.api.paginationSetPageSize(event.target.value);
   };
 
-  onFilterChanged = () => {
-    debugger;
+  onFilterChanged = evn => {
+    let url: string;
+    console.log(evn.api.getFilterModel());
+    const filters = evn.api.getFilterModel();
+    const filterKeys = Object.keys(filters);
+    filterKeys.forEach(filt => {
+      url = `${filt}=${filterKeys[filt].filter}&`;
+    });
+    console.log(url);
   };
 
   render() {
